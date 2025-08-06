@@ -9,8 +9,6 @@ from networksecurity.entity.config_entity import ModelTrainerConfig
 
 
 
-
-
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
 from networksecurity.utils.main_utils.utils import save_object,load_object
 from networksecurity.utils.main_utils.utils import load_numpy_array_data,evaluate_models
@@ -28,8 +26,8 @@ from sklearn.ensemble import (
 import mlflow
 # from urllib.parse import urlparse
 
-# import dagshub
-# #dagshub.init(repo_owner='krishnaik06', repo_name='networksecurity', mlflow=True)
+import dagshub
+dagshub.init(repo_owner='Kkrrai4', repo_name='Networksecurity', mlflow=True)
 
 # os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/krishnaik06/networksecurity.mlflow"
 # os.environ["MLFLOW_TRACKING_USERNAME"]="krishnaik06"
@@ -56,7 +54,7 @@ class ModelTrainer:
             mlflow.log_metric("f1_score",f1_score)
             mlflow.log_metric("precision",precision_score)
             mlflow.log_metric("recall_score",recall_score)
-            mlflow.sklearn.log_model(best_model,"model")
+            # mlflow.sklearn.log_model(best_model,"model")
             # Model registry does not work with file store
             # if tracking_url_type_store != "file":
 
@@ -105,14 +103,6 @@ class ModelTrainer:
             }
             
         }
-        
-        
-        
-        
-        
-        
-        
-        
         model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=x_test,y_test=y_test,
                                           models=models,param=params)
         
@@ -146,7 +136,7 @@ class ModelTrainer:
         Network_Model=NetworkModel(preprocessor=preprocessor,model=best_model)
         save_object(self.model_trainer_config.trained_model_file_path,obj=NetworkModel)
         #model pusher
-        save_object("final_model/model.pkl",best_model)
+        # save_object("final_model/model.pkl",best_model)
         
 
         ## Model Trainer Artifact
@@ -156,9 +146,6 @@ class ModelTrainer:
                              )
         logging.info(f"Model trainer artifact: {model_trainer_artifact}")
         return model_trainer_artifact
-    
-    
-    
     
         
     def initiate_model_trainer(self)->ModelTrainerArtifact:
